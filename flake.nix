@@ -9,7 +9,7 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          packages = [ pkgs.cargo pkgs.rustc ];
+          packages = [ pkgs.cargo pkgs.rustc pkgs.rustfmt ];
         };
       });
 }
