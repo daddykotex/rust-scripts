@@ -1,20 +1,22 @@
-use std::io;
+use clap::Parser;
 
-fn main() {
-    println!("Guess the number!");
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Name of the person to greet
+    #[arg(short, long)]
+    name: String,
 
-    println!("Please input your guess.");
-
-    let guess: String = read_one_line();
-
-    println!("You guessed: {guess}");
+    /// Number of times to greet
+    #[arg(short, long, default_value_t = 1)]
+    count: u8,
 }
 
-fn read_one_line() -> String {
-    let mut value = String::new();
+fn main() {
+    let args = Args::parse();
 
-    io::stdin()
-        .read_line(&mut value)
-        .expect("Failed to read line");
-    return value;
+    for _ in 0..args.count {
+        println!("Hello {}!", args.name)
+    }
 }
