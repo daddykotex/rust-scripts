@@ -1,4 +1,5 @@
 use clap::Parser;
+use reqwest::blocking::Client;
 use std::collections::HashMap;
 
 #[derive(Parser, Debug)]
@@ -16,11 +17,24 @@ fn main() {
     let args = Args::parse();
 
     println!("KEY = [{}], SECRET = [{}]", args.api_key, args.api_secret);
-    make_request("https://httpbin.org/ip")
+    let client = Client::builder()
+        .build()
+        .expect("Unable to build HTTP client.");
+    make_request(
+        client,
+        "https://api.etsy.com/v3/application/openapi-ping",
+        &args.api_key,
+    )
 }
 
-fn make_request(uri: &str) {
-    let resp = reqwest::blocking::get(uri)
+fn make_request(client: Client, uri: &str, api_key: &str) {
+    let req = client
+        .get(uri)
+        .header("x-api-key", api_key)
+        .build()
+        .expect("Unable to build the HTTP request.");
+    let resp = client
+        .execute(req)
         .expect(&format!("{}:{}", "HTTP request failed", uri))
         .json::<HashMap<String, String>>();
     println!("{:#?}", resp);
