@@ -1,0 +1,2 @@
+[alias]
+runx = "run -- --api-key apiKey --api-secret apiSecret"
