@@ -26,4 +26,6 @@ jobs:
         shell: sh
       - name: Setup environment
         run: devenv ci
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2.2.1
       - run: devenv shell cargo build
