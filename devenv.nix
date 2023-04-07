@@ -1,20 +1,20 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
-  # https://devenv.sh/basics/
-  env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git ];
+  packages = [ pkgs.git ] ++
+    lib.optionals pkgs.stdenv.isDarwin (with pkgs.darwin.apple_sdk; [
+      frameworks.CoreFoundation
+      frameworks.Security
+      frameworks.SystemConfiguration
+    ]) ++
+    lib.optionals pkgs.stdenv.isLinux ([pkgs.openssl]);
 
   # https://devenv.sh/languages/
   languages.rust.enable = true;
 
-  # https://devenv.sh/scripts/
-  scripts.hello.exec = "echo hello from $GREET";
-
   enterShell = ''
-    hello
     git --version
   '';
 
