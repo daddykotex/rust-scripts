@@ -26,4 +26,4 @@ jobs:
         shell: sh
       - name: Setup environment
         run: devenv ci
-      - run: devenv shell cargo build --verbose
+      - run: devenv shell cargo build
